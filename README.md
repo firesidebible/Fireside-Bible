@@ -10,4 +10,4 @@ Past tense is preserved where the source texts require it: inside direct speech,
 
 The voice throughout is plain and direct — accessible to any modern reader, with an elevated register reserved for divine speech and the great hymns of Scripture. Poetry and song are set apart as indented italics. The divine name is rendered **YHWH** throughout, rather than softened to LORD. Yeshua’s title is rendered **Messiah** rather than Christ, and in the Pauline letters, **Torah** is preferred over Law — choices made in the interest of historical honesty and to resist readings that flatten the Jewish world these texts inhabit.
 
-This is not a scholarly edition. Readers who want to examine the translational choices verse by verse are directed to the Scholar’s Edition, which accompanies each book with a full Translator’s Notes table working from the source-language text. What you hold here is a reader’s Bible — made to be read aloud, read at speed, read by firelight.
+This is not a scholarly edition. What you hold here is a reader’s Bible — made to be read aloud, read at speed, read by firelight.
