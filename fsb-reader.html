@@ -87,6 +87,95 @@
   }
   #about-btn:active { background: #2a271f; color: var(--accent-gold); border-color: var(--accent-gold); }
 
+  #devo-btn {
+    background: none;
+    border: 1px solid #3a3528;
+    color: var(--accent-gold);
+    font-family: var(--font-title);
+    font-size: .58rem; letter-spacing: .18em;
+    text-transform: uppercase;
+    padding: 0 12px; height: 32px; margin-right: 8px;
+    cursor: pointer; border-radius: 2px;
+    transition: background .2s, border-color .2s, color .2s;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  #devo-btn:active { background: #2a271f; border-color: var(--accent-gold); }
+
+  /* ── Devotional modal ─────────────────────────────────────────────── */
+  #devo-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 200; align-items: center; justify-content: center; padding: 20px;
+  }
+  #devo-backdrop.open { display: flex; }
+
+  #devo-panel {
+    background: var(--parchment); border-radius: 4px;
+    width: 100%; max-width: 560px; max-height: 85vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 8px 40px rgba(0,0,0,.4); overflow: hidden;
+  }
+  #devo-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; border-bottom: 1px solid var(--rule); flex-shrink: 0;
+  }
+  #devo-header h2 {
+    font-family: var(--font-title); font-size: .8rem;
+    letter-spacing: .18em; color: var(--ink); font-weight: 400;
+    text-transform: uppercase;
+  }
+  #devo-close {
+    background: none; border: none; font-size: 1.3rem;
+    color: var(--sidebar-dim); cursor: pointer; line-height: 1;
+    min-width: 44px; min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #devo-close:active { color: var(--ink); }
+
+  #devo-body {
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 26px 26px 30px; flex: 1;
+    font-size: 1.05rem; line-height: 1.75; color: var(--ink);
+  }
+  .devo-date {
+    font-family: var(--font-title); font-size: 1.15rem;
+    letter-spacing: .14em; color: var(--ink); text-transform: uppercase;
+    text-align: center; margin-bottom: 4px;
+  }
+  .devo-ref {
+    font-family: var(--font-display); font-size: .95rem;
+    color: var(--accent); text-align: center; letter-spacing: .05em;
+    margin-bottom: 16px;
+  }
+  .devo-verse {
+    font-style: italic; color: var(--ink-soft);
+    padding: 14px 18px; margin-bottom: 18px;
+    border-left: 3px solid var(--accent-gold);
+    background: rgba(196,164,105,.08);
+  }
+  .devo-para { margin-bottom: 1em; }
+  .devo-block {
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-size: .98rem;
+  }
+  .devo-block .devo-label {
+    font-family: var(--font-title); font-size: .68rem;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent-gold); display: block; margin-bottom: 4px;
+  }
+  #devo-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; border-top: 1px solid var(--rule); flex-shrink: 0;
+  }
+  .devo-nav-btn {
+    background: none; border: 1px solid var(--rule); border-radius: 2px;
+    font-family: var(--font-title); font-size: .62rem;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-soft); padding: 10px 14px; cursor: pointer;
+  }
+  .devo-nav-btn:active { background: var(--bg); color: var(--accent); }
+
   /* ── Nav bar ──────────────────────────────────────────────────────── */
   #nav-bar {
     position: fixed; bottom: 0; left: 0; right: 0;
@@ -395,6 +484,7 @@
   </button>
   <div id="topbar-title">Fireside Bible</div>
   <div id="chapter-ref"></div>
+  <button id="devo-btn">&#10022; Devotional</button>
   <button id="about-btn">About</button>
 </header>
 
@@ -436,6 +526,21 @@
   </button>
 </footer>
 
+<div id="devo-backdrop">
+  <div id="devo-panel">
+    <div id="devo-header">
+      <h2>Joy in the Morning</h2>
+      <button id="devo-close">&#10005;</button>
+    </div>
+    <div id="devo-body"></div>
+    <div id="devo-nav">
+      <button class="devo-nav-btn" id="devo-prev">&#8592; Prev</button>
+      <button class="devo-nav-btn" id="devo-today">Today</button>
+      <button class="devo-nav-btn" id="devo-next">Next &#8594;</button>
+    </div>
+  </div>
+</div>
+
 <div id="about-backdrop">
   <div id="about-panel">
     <div id="about-header">
@@ -449,11 +554,13 @@
 <script>
 const DATA_URL   = './fsb-content.json';
 const NOTES_URL  = './fsb-notes.json';
+const DEVO_URL   = './fsb-devotional.json';
 const README_URL = 'https://raw.githubusercontent.com/firesidebible/Fireside-Bible/main/README.md';
 
 /* ── State ──────────────────────────────────────────────────────────── */
 let bible = null, flatIndex = [], currentFlat = -1, readmeLoaded = false;
 let notesData = null, notesPromise = null;
+let devoData = null, devoPromise = null, devoKeys = [], devoIndex = -1;
 
 /* ── DOM ────────────────────────────────────────────────────────────── */
 const sidebarInner   = document.getElementById('sidebar-inner');
@@ -476,6 +583,13 @@ const aboutBody      = document.getElementById('about-body');
 const notesSection   = document.getElementById('notes-section');
 const notesToggle    = document.getElementById('notes-toggle');
 const notesBody      = document.getElementById('notes-body');
+const devoBtn        = document.getElementById('devo-btn');
+const devoBackdrop   = document.getElementById('devo-backdrop');
+const devoBody       = document.getElementById('devo-body');
+const devoClose      = document.getElementById('devo-close');
+const devoPrev       = document.getElementById('devo-prev');
+const devoNext       = document.getElementById('devo-next');
+const devoToday      = document.getElementById('devo-today');
 
 /* ── Bible loader ───────────────────────────────────────────────────── */
 async function init() {
@@ -674,6 +788,83 @@ function setupNotes(bookName, chNum) {
     notesSection.style.display = 'block'; // optimistic; resolved on first tap
   }
 }
+
+
+/* ── Devotional ─────────────────────────────────────────────────────── */
+function loadDevo() {
+  if (!devoPromise) {
+    devoPromise = fetch(DEVO_URL)
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        devoData = data;
+        devoKeys = Object.keys(data).sort();
+        return data;
+      })
+      .catch(function(e) { devoPromise = null; throw e; });
+  }
+  return devoPromise;
+}
+
+function todayKey() {
+  var now = new Date();
+  var m = String(now.getMonth() + 1);
+  var d = String(now.getDate());
+  return (m.length < 2 ? '0' + m : m) + '-' + (d.length < 2 ? '0' + d : d);
+}
+
+function renderDevo(idx) {
+  if (idx < 0) idx = devoKeys.length - 1;
+  if (idx >= devoKeys.length) idx = 0;
+  devoIndex = idx;
+  var e = devoData[devoKeys[idx]];
+  var html = [];
+  html.push('<div class="devo-date">' + esc(e.date) + '</div>');
+  html.push('<div class="devo-ref">' + esc(e.ref) + '</div>');
+  html.push('<div class="devo-verse">\u201c' + esc(e.verse) + '\u201d</div>');
+  (e.body || []).forEach(function(p) {
+    html.push('<div class="devo-para">' + esc(p) + '</div>');
+  });
+  if (e.prayer) {
+    html.push('<div class="devo-block"><span class="devo-label">\u2726 Prayer</span>' + esc(e.prayer) + '</div>');
+  }
+  if (e.reflection) {
+    html.push('<div class="devo-block"><span class="devo-label">\u2726 Reflection</span>' + esc(e.reflection) + '</div>');
+  }
+  devoBody.innerHTML = html.join('');
+  devoBody.scrollTop = 0;
+}
+
+async function openDevo() {
+  devoBackdrop.classList.add('open');
+  if (!devoData) {
+    devoBody.innerHTML = '<p style="opacity:.5;font-style:italic;text-align:center;padding:20px">Loading\u2026</p>';
+    try {
+      await loadDevo();
+    } catch (e) {
+      devoBody.innerHTML = '<p style="color:var(--accent);text-align:center">Could not load the devotional (' + esc(e.message) + '). Make sure fsb-devotional.json is in the same directory.</p>';
+      return;
+    }
+  }
+  var idx = devoKeys.indexOf(todayKey());
+  renderDevo(idx >= 0 ? idx : 0);
+}
+
+devoBtn.addEventListener('click', openDevo);
+devoClose.addEventListener('click', function() { devoBackdrop.classList.remove('open'); });
+devoBackdrop.addEventListener('click', function(ev) {
+  if (ev.target === devoBackdrop) devoBackdrop.classList.remove('open');
+});
+devoPrev.addEventListener('click', function() { if (devoData) renderDevo(devoIndex - 1); });
+devoNext.addEventListener('click', function() { if (devoData) renderDevo(devoIndex + 1); });
+devoToday.addEventListener('click', function() {
+  if (devoData) {
+    var idx = devoKeys.indexOf(todayKey());
+    renderDevo(idx >= 0 ? idx : 0);
+  }
+});
 
 notesToggle.addEventListener('click', async function() {
   var isOpen = notesSection.classList.contains('open');
