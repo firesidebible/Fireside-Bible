@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<script>
+  /* Pick the theme before anything paints: saved choice, else the phone's setting. */
+  (function() {
+    var t = null;
+    try { t = localStorage.getItem('fsb-theme'); } catch (e) {}
+    if (t !== 'dark' && t !== 'light') {
+      t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', t);
+    if (t === 'dark') document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d');
+  })();
+</script>
+<title>Fireside Bible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── Fireside Bible · "Gallery" theme ─────────────────────────────────
+     White space, black type, one red accent. Inter throughout.
+     Emphasis comes from weight (bold) and italics, not ornament. */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:           #ffffff;
+    --parchment:    #f5f5f3;   /* panels / pressed states */
+    --sidebar-bg:   #ffffff;
+    --sidebar-text: #0a0a0a;
+    --sidebar-dim:  #8a8a8a;
+    --ink:          #0a0a0a;
+    --ink-soft:     #262626;
+    --accent:       #c8102e;   /* gallery red */
+    --accent-gold:  #c8102e;   /* legacy name, now red */
+    --rule:         #e4e4e4;
+    --rule-strong:  #0a0a0a;
+    --hover:        #f2f2f0;
+    --glass:        rgba(255,255,255,.92);
+    --on-ink:       #ffffff;
+    --scrim:        rgba(10,10,10,.55);
+    --sidebar-w:    300px;
+    --header-h:     56px;
+    --footer-h:     68px;
+    --font-body:    'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-display: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-title:   'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --ease:         cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── Dark mode ─────────────────────────────────────────────────────── */
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --bg:           #0d0d0d;
+    --parchment:    #1a1a1a;
+    --sidebar-bg:   #0d0d0d;
+    --sidebar-text: #f2f2f2;
+    --sidebar-dim:  #8f8f8f;
+    --ink:          #f5f5f5;
+    --ink-soft:     #d0d0d0;
+    --accent:       #ff4757;   /* brighter red so it reads on black */
+    --accent-gold:  #ff4757;
+    --rule:         #2b2b2b;
+    --rule-strong:  #4a4a4a;
+    --hover:        #1d1d1d;
+    --glass:        rgba(13,13,13,.9);
+    --on-ink:       #0d0d0d;
+    --scrim:        rgba(0,0,0,.7);
+  }
+  html[data-theme="dark"] #devo-panel,
+  html[data-theme="dark"] #about-panel { background: #161616; border: 1px solid var(--rule); }
+  html, body, #reader, #sidebar, #notes-section, #topbar, #nav-bar {
+    transition: background-color .25s, color .25s, border-color .25s;
+  }
+
+  #theme-btn {
+    background: none; border: 1px solid var(--rule); color: var(--ink);
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; padding: 0;
+  }
+  #theme-btn svg { width: 16px; height: 16px; }
+  #theme-btn .sun { display: none; }
+  html[data-theme="dark"] #theme-btn .sun { display: block; }
+  html[data-theme="dark"] #theme-btn .moon { display: none; }
+  #theme-btn:active { background: var(--hover); border-color: var(--ink); }
+  @media (hover: hover) { #theme-btn:hover { border-color: var(--ink); } }
+
+  html { height: 100%; -webkit-text-size-adjust: 100%; }
+  body {
+    height: 100%; font-family: var(--font-body);
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  ::selection { background: var(--accent); color: #fff; }
+  button { font-family: var(--font-body); -webkit-tap-highlight-color: transparent; }
+
+  /* ── Topbar ───────────────────────────────────────────────────────── */
+  #topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--glass);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    backdrop-filter: saturate(180%) blur(12px);
+    display: flex; align-items: center;
+    padding: 0 12px 0 8px; gap: 10px;
+    border-bottom: 1px solid var(--rule);
+    z-index: 100;
+  }
+
+  #menu-toggle {
+    background: none; border: none; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    gap: 5px; padding: 4px;
+    min-width: 44px; min-height: 44px;
+  }
+  #menu-toggle span {
+    display: block; width: 20px; height: 2px;
+    background: var(--ink);
+    transition: transform .3s var(--ease), opacity .3s;
+  }
+  body.nav-open #menu-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.nav-open #menu-toggle span:nth-child(2) { opacity: 0; }
+  body.nav-open #menu-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  #topbar-title {
+    font-size: 1rem; font-weight: 800;
+    letter-spacing: -.02em; color: var(--ink);
+    flex: 1; white-space: nowrap;
+  }
+  #topbar-title::after {
+    content: ''; display: inline-block;
+    width: 6px; height: 6px; margin-left: 3px;
+    background: var(--accent); border-radius: 50%;
+    vertical-align: baseline;
+  }
+
+  #chapter-ref {
+    font-size: .8rem; font-weight: 500;
+    color: var(--sidebar-dim);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    max-width: 200px; display: none;
+  }
+
+  #about-btn, #devo-btn {
+    background: none;
+    border: 1px solid var(--rule);
+    color: var(--ink);
+    font-size: .72rem; font-weight: 600; letter-spacing: .02em;
+    padding: 0 12px; height: 32px;
+    cursor: pointer; border-radius: 999px;
+    transition: background .2s, border-color .2s, color .2s;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  #devo-btn { background: var(--ink); border-color: var(--ink); color: var(--on-ink); margin-right: 2px; }
+  #about-btn:active { background: var(--hover); border-color: var(--ink); }
+  #devo-btn:active  { background: var(--accent); border-color: var(--accent); }
+  @media (hover: hover) {
+    #about-btn:hover { border-color: var(--ink); }
+    #devo-btn:hover  { background: var(--accent); border-color: var(--accent); }
+  }
+
+  /* ── Modals (shared look) ─────────────────────────────────────────── */
+  #devo-backdrop, #about-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: var(--scrim);
+    z-index: 200; align-items: center; justify-content: center; padding: 16px;
+  }
+  #devo-backdrop.open, #about-backdrop.open { display: flex; }
+
+  #devo-panel, #about-panel {
+    background: var(--bg); border-radius: 14px;
+    width: 100%; max-height: 85vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 24px 60px rgba(0,0,0,.25); overflow: hidden;
+  }
+  #devo-panel  { max-width: 560px; }
+  #about-panel { max-width: 640px; }
+
+  #devo-header, #about-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 10px 10px 22px; border-bottom: 1px solid var(--rule); flex-shrink: 0;
+  }
+  #devo-header h2, #about-header h2 {
+    font-size: .7rem; font-weight: 700;
+    letter-spacing: .14em; color: var(--accent);
+    text-transform: uppercase;
+  }
+  #devo-close, #about-close {
+    background: none; border: none; font-size: 1.1rem;
+    color: var(--ink); cursor: pointer; line-height: 1;
+    min-width: 44px; min-height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #devo-close:active, #about-close:active { background: var(--hover); }
+
+  /* ── Devotional ───────────────────────────────────────────────────── */
+  #devo-body {
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 28px 26px 30px; flex: 1;
+    font-size: 1rem; line-height: 1.7; color: var(--ink-soft);
+  }
+  .devo-date {
+    font-size: 1.9rem; font-weight: 800;
+    letter-spacing: -.03em; line-height: 1.1; color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .devo-ref {
+    font-size: .78rem; font-weight: 700;
+    color: var(--accent); letter-spacing: .1em; text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .devo-verse {
+    font-style: italic; font-size: 1.12rem; line-height: 1.6;
+    color: var(--ink);
+    padding: 2px 0 2px 18px; margin-bottom: 22px;
+    border-left: 3px solid var(--accent);
+  }
+  .devo-para { margin-bottom: 1em; }
+  .devo-block {
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-style: italic;
+  }
+  .devo-block .devo-label {
+    font-style: normal; font-size: .68rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink); display: block; margin-bottom: 6px;
+  }
+  #devo-nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 12px 14px; border-top: 1px solid var(--rule); flex-shrink: 0;
+  }
+  .devo-nav-btn {
+    background: none; border: 1px solid var(--rule); border-radius: 999px;
+    font-size: .78rem; font-weight: 600;
+    color: var(--ink); padding: 10px 16px; cursor: pointer; min-height: 40px;
+  }
+  #devo-today { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+  .devo-nav-btn:active { background: var(--hover); border-color: var(--ink); }
+  #devo-today:active { background: var(--accent); border-color: var(--accent); }
+
+  /* ── Nav bar ──────────────────────────────────────────────────────── */
+  #nav-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: var(--footer-h);
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 0 14px;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid var(--rule);
+    background: var(--glass);
+    -webkit-backdrop-filter: saturate(180%) blur(12px);
+    backdrop-filter: saturate(180%) blur(12px);
+    z-index: 100;
+  }
+
+  .nav-btn {
+    background: none; border: 1px solid var(--rule);
+    color: var(--ink);
+    font-size: .82rem; font-weight: 600; padding: 0 16px;
+    height: 44px; min-width: 44px;
+    cursor: pointer; border-radius: 999px;
+    display: flex; align-items: center; gap: 8px;
+    transition: background .2s, border-color .2s, color .2s;
+  }
+  #btn-next { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+  .nav-btn:active { background: var(--hover); border-color: var(--ink); }
+  #btn-next:active { background: var(--accent); border-color: var(--accent); }
+  .nav-btn:disabled, #btn-next:disabled { opacity: .25; cursor: default; }
+  .nav-btn .arrow { font-size: 1em; }
+  @media (hover: hover) {
+    .nav-btn:not(:disabled):hover { border-color: var(--ink); }
+    #btn-next:not(:disabled):hover { background: var(--accent); border-color: var(--accent); }
+  }
+
+  #nav-center {
+    font-size: .72rem; font-weight: 500;
+    color: var(--sidebar-dim); text-align: center; line-height: 1.3;
+    min-width: 0; overflow: hidden;
+  }
+  #nav-center strong {
+    display: block; color: var(--ink); font-weight: 700; font-size: .85rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ── Sidebar ──────────────────────────────────────────────────────── */
+  #sidebar {
+    position: fixed; top: var(--header-h); left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--sidebar-bg); border-right: 1px solid var(--rule);
+    display: flex; flex-direction: column;
+    z-index: 90;
+    transform: translateX(calc(-1 * var(--sidebar-w)));
+    transition: transform .35s var(--ease);
+  }
+  body.nav-open #sidebar { transform: translateX(0); }
+
+  #sidebar-inner {
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    flex: 1; padding: 8px 0 32px;
+    scrollbar-width: thin; scrollbar-color: var(--rule) transparent;
+  }
+  #sidebar-inner::-webkit-scrollbar { width: 4px; }
+  #sidebar-inner::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 2px; }
+
+  .testament-group { margin-bottom: 8px; }
+  .testament-label {
+    font-size: .66rem; font-weight: 700;
+    letter-spacing: .16em; color: var(--accent);
+    text-transform: uppercase; padding: 18px 22px 8px;
+  }
+
+  .book-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 18px 0 22px; min-height: 44px;
+    cursor: pointer; color: var(--sidebar-text);
+    font-size: .95rem; font-weight: 500; letter-spacing: -.01em;
+    transition: background .15s, color .15s; user-select: none;
+  }
+  .book-row:active { background: var(--hover); }
+  @media (hover: hover) { .book-row:hover { background: var(--hover); } }
+  .book-row.active { font-weight: 800; color: var(--ink); box-shadow: inset 3px 0 0 var(--accent); }
+
+  .book-chevron {
+    font-size: .55rem; color: var(--sidebar-dim);
+    transition: transform .25s var(--ease); padding: 4px; flex-shrink: 0;
+  }
+  .book-row.open .book-chevron { transform: rotate(90deg); color: var(--ink); }
+
+  .chapter-list { display: none; flex-wrap: wrap; gap: 6px; padding: 6px 18px 14px 22px; }
+  .chapter-list.open { display: flex; }
+
+  .ch-btn {
+    background: none; border: 1px solid var(--rule);
+    color: var(--ink); font-size: .78rem; font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    width: 38px; height: 38px;
+    cursor: pointer; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .ch-btn:active { background: var(--hover); border-color: var(--ink); }
+  @media (hover: hover) { .ch-btn:hover { border-color: var(--ink); } }
+  .ch-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 700; }
+
+  /* ── Overlay ──────────────────────────────────────────────────────── */
+  #overlay {
+    display: none; position: fixed;
+    top: var(--header-h); left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,10,.35); z-index: 80;
+  }
+  body.nav-open #overlay { display: block; }
+
+  /* ── Reader ───────────────────────────────────────────────────────── */
+  #reader {
+    position: fixed;
+    top: var(--header-h); left: 0; right: 0; bottom: var(--footer-h);
+    overflow-y: scroll; -webkit-overflow-scrolling: touch;
+    background: var(--bg); z-index: 10;
+  }
+
+  #content-wrap {
+    max-width: 640px; margin: 0 auto;
+    padding: 64px 36px 64px; width: 100%;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fadein { animation: fadeIn .3s var(--ease); }
+
+  /* ── Typography ───────────────────────────────────────────────────── */
+  #chapter-heading {
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: .16em; color: var(--accent);
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  #chapter-title {
+    font-size: 3rem; font-weight: 800;
+    letter-spacing: -.035em; line-height: 1.02; color: var(--ink);
+    margin-bottom: 0;
+  }
+  /* The ✦ ✦ ✦ ornament becomes a short red rule */
+  .ornament {
+    display: block; width: 44px; height: 4px;
+    background: var(--accent);
+    font-size: 0; color: transparent; overflow: hidden;
+    margin: 28px 0 32px;
+  }
+  #chapter-body {
+    font-size: 1.1rem; line-height: 1.75; color: var(--ink-soft);
+    font-weight: 400; letter-spacing: -.003em;
+  }
+  #chapter-body p { margin-bottom: 1.25em; text-align: left; hyphens: manual; }
+  #chapter-body p.lead { font-size: 1.16em; line-height: 1.6; color: var(--ink); font-weight: 500; }
+  #chapter-body p.lead::first-letter { font-weight: 800; color: var(--accent); }
+  #chapter-body p.line { margin-bottom: .15em; padding-left: 1.4em; text-indent: -1.4em; }
+  #chapter-body p.line.stanza-end { margin-bottom: 1.1em; }
+  #chapter-body p.lead.line { font-size: 1em; font-weight: 400; color: var(--ink-soft); }
+
+  /* Section heads: bold title, red verse range beneath */
+  .sec-head {
+    display: flex; flex-direction: column; gap: 4px;
+    margin: 2.4em 0 1em;
+  }
+  .sec-head:first-child { margin-top: 0; }
+  .sec-title {
+    font-size: 1.3rem; font-weight: 800;
+    letter-spacing: -.02em; line-height: 1.2; color: var(--ink);
+  }
+  .sec-ref {
+    order: -1;
+    font-size: .7rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); font-variant-numeric: tabular-nums;
+  }
+  #chapter-body em, #chapter-body i { font-style: italic; color: var(--ink); }
+  #chapter-body strong, #chapter-body b { font-weight: 700; color: var(--ink); }
+
+  /* ── Notes pane: docked to the bottom of the window, scrolls on its own ── */
+  :root { --notes-h: 36vh; --notes-head: 46px; }
+  #notes-section {
+    display: none;
+    position: fixed; left: 0; right: 0; bottom: var(--footer-h);
+    height: var(--notes-h);
+    background: var(--bg);
+    border-top: 2px solid var(--rule-strong);
+    z-index: 50;
+    flex-direction: column;
+  }
+  body.has-notes #notes-section { display: flex; }
+  body.has-notes #reader { bottom: calc(var(--footer-h) + var(--notes-h)); }
+  body.has-notes.notes-collapsed { --notes-h: var(--notes-head); }
+  body.notes-dragging #reader, body.notes-dragging #notes-section { transition: none !important; }
+
+  #notes-head {
+    flex-shrink: 0; height: var(--notes-head);
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 6px 0 22px;
+    border-bottom: 1px solid var(--rule);
+    touch-action: none; user-select: none; -webkit-user-select: none;
+    cursor: ns-resize; position: relative;
+  }
+  /* grab handle */
+  #notes-head::before {
+    content: ''; position: absolute; top: 5px; left: 50%;
+    width: 36px; height: 4px; margin-left: -18px;
+    border-radius: 2px; background: var(--rule);
+  }
+  #notes-label {
+    flex: 1; min-width: 0;
+    font-size: .7rem; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #notes-label .notes-where { color: var(--accent); margin-left: .6em; }
+  #notes-toggle {
+    background: none; border: none; cursor: pointer;
+    min-width: 44px; min-height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink);
+  }
+  #notes-toggle:active { background: var(--hover); }
+  #notes-toggle .notes-chevron {
+    font-size: .6rem; color: var(--accent);
+    transform: rotate(90deg);
+    transition: transform .25s var(--ease);
+  }
+  body.notes-collapsed #notes-toggle .notes-chevron { transform: rotate(-90deg); }
+
+  #notes-body {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 6px 22px 28px;
+    font-size: .95rem; line-height: 1.65; color: var(--ink-soft);
+  }
+  body.notes-collapsed #notes-body { display: none; }
+  #notes-inner { max-width: 640px; margin: 0 auto; }
+
+  @media (min-width: 860px) {
+    #notes-section { left: var(--sidebar-w); transition: left .35s var(--ease); }
+    body.nav-closed #notes-section { left: 0; }
+    #notes-head {
+      padding-left: max(22px, calc((100% - 640px) / 2));
+      padding-right: max(6px, calc((100% - 640px) / 2 - 14px));
+    }
+  }
+
+  .notes-intro { font-style: italic; margin-bottom: 1.6em; color: var(--ink); }
+  .notes-intro p { margin-bottom: .9em; }
+
+  .note-block {
+    padding: 20px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .note-v {
+    font-weight: 700; font-size: 1rem;
+    color: var(--ink); margin-bottom: 4px; letter-spacing: -.01em;
+  }
+  .note-v .note-ref { color: var(--accent); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .note-original {
+    font-style: italic; color: var(--sidebar-dim);
+    font-size: .95rem; margin-bottom: 10px;
+  }
+  .note-why p { margin-bottom: .8em; }
+  .note-why p:last-child { margin-bottom: 0; }
+
+  .note-heading {
+    font-size: .68rem; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--accent); padding: 24px 0 6px;
+  }
+
+  .notes-outro {
+    margin-top: 1.4em; padding: 4px 0 4px 18px;
+    border-left: 3px solid var(--accent);
+    font-style: italic; color: var(--ink); font-size: .98rem;
+  }
+  .notes-outro p { margin-bottom: .8em; }
+  .notes-outro p:last-child { margin-bottom: 0; }
+
+  .notes-covers {
+    font-size: .8rem; font-weight: 500;
+    color: var(--sidebar-dim); margin-bottom: 1.2em;
+  }
+
+  /* ── Splash ───────────────────────────────────────────────────────── */
+  #splash {
+    display: flex; flex-direction: column; align-items: flex-start;
+    justify-content: center; min-height: 60vh;
+    gap: 14px; padding: 40px 0; text-align: left; color: var(--ink-soft);
+  }
+  #splash h2 {
+    font-size: 3rem; font-weight: 800;
+    letter-spacing: -.04em; line-height: 1; color: var(--ink);
+  }
+  #splash h2::after {
+    content: ''; display: block; width: 44px; height: 4px;
+    background: var(--accent); margin-top: 24px;
+  }
+  #splash p { font-size: 1.05rem; font-style: italic; color: var(--sidebar-dim); }
+
+  /* ── About modal body ─────────────────────────────────────────────── */
+  #about-body {
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 26px 26px 34px; flex: 1;
+  }
+  #about-body h1 {
+    font-size: 1.9rem; font-weight: 800;
+    letter-spacing: -.03em; line-height: 1.1; color: var(--ink);
+    margin-bottom: 16px; padding-bottom: 16px; border-bottom: 2px solid var(--rule-strong);
+  }
+  #about-body h2 {
+    font-size: .7rem; font-weight: 700;
+    letter-spacing: .14em; color: var(--accent); text-transform: uppercase;
+    margin: 26px 0 8px;
+  }
+  #about-body h3 {
+    font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em;
+    color: var(--ink); margin: 18px 0 6px;
+  }
+  #about-body p, #about-body ul, #about-body ol {
+    font-size: .98rem; line-height: 1.7; color: var(--ink-soft);
+  }
+  #about-body p { margin-bottom: .9em; }
+  #about-body ul, #about-body ol { margin: 0 0 .9em 1.3em; }
+  #about-body li { margin-bottom: .25em; }
+  #about-body li::marker { color: var(--accent); }
+  #about-body strong { color: var(--ink); font-weight: 700; }
+  #about-body em { font-style: italic; color: var(--ink); }
+  #about-body a { color: var(--accent); font-weight: 600; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  #about-body code {
+    font-family: ui-monospace, Menlo, monospace; font-size: .85em;
+    background: var(--parchment); padding: 1px 6px; border-radius: 4px;
+  }
+  #about-body hr { border: none; border-top: 1px solid var(--rule); margin: 20px 0; }
+  #about-body blockquote {
+    border-left: 3px solid var(--accent); margin: 0 0 .9em;
+    padding: 2px 16px; color: var(--ink); font-style: italic;
+  }
+
+  /* ── Desktop ──────────────────────────────────────────────────────── */
+  @media (min-width: 860px) {
+    #reader    { left: var(--sidebar-w); transition: left .35s var(--ease); }
+    #nav-bar   { left: var(--sidebar-w); transition: left .35s var(--ease); padding: 0 24px; }
+    body.nav-closed #reader  { left: 0; }
+    body.nav-closed #nav-bar { left: 0; }
+    #overlay { display: none !important; }
+    #chapter-ref { display: block; }
+    #chapter-title { font-size: 3.6rem; }
+  }
+
+  /* ── Mobile ───────────────────────────────────────────────────────── */
+  @media (max-width: 859px) {
+    #content-wrap { padding: 36px 22px 44px; }
+    #chapter-title { font-size: 2.4rem; }
+    #chapter-body  { font-size: 1.04rem; }
+    #splash h2 { font-size: 2.4rem; }
+  }
+  @media (max-width: 400px) {
+    #about-btn, #devo-btn { padding: 0 10px; }
+    #topbar { gap: 6px; }
+    .nav-btn { padding: 0 14px; }
+  }
+</style>
+</head>
+<body class="nav-closed">
+
+<header id="topbar">
+  <button id="menu-toggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="topbar-title">Fireside Bible</div>
+  <div id="chapter-ref"></div>
+  <button id="theme-btn" aria-label="Switch to dark mode">
+    <svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v2.5M12 20v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M1.5 12h2.5M20 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+  </button>
+  <button id="devo-btn">Devotional</button>
+  <button id="about-btn">About</button>
+</header>
+
+<div id="overlay"></div>
+
+<nav id="sidebar" aria-label="Bible navigation">
+  <div id="sidebar-inner"></div>
+</nav>
+
+<div id="reader">
+  <div id="content-wrap">
+    <div id="splash">
+      <h2>The Fireside Bible</h2>
+      <p>Choose a book and chapter from the navigation panel.</p>
+    </div>
+    <div id="chapter-view" style="display:none">
+      <div id="chapter-heading"></div>
+      <h1 id="chapter-title"></h1>
+      <span class="ornament">✦ ✦ ✦</span>
+      <div id="chapter-body"></div>
+    </div>
+  </div>
+</div>
+
+<section id="notes-section" aria-label="Translator's notes">
+  <div id="notes-head">
+    <div id="notes-label">Notes<span class="notes-where"></span></div>
+    <button id="notes-toggle" aria-expanded="true" aria-label="Collapse notes">
+      <span class="notes-chevron">&#9658;</span>
+    </button>
+  </div>
+  <div id="notes-body"><div id="notes-inner"></div></div>
+</section>
+
+<footer id="nav-bar">
+  <button class="nav-btn" id="btn-prev" disabled>
+    <span class="arrow">&#8592;</span> Previous
+  </button>
+  <div id="nav-center"><span id="nav-label">&#8212;</span></div>
+  <button class="nav-btn" id="btn-next" disabled>
+    Next <span class="arrow">&#8594;</span>
+  </button>
+</footer>
+
+<div id="devo-backdrop">
+  <div id="devo-panel">
+    <div id="devo-header">
+      <h2>Joy in the Morning</h2>
+      <button id="devo-close">&#10005;</button>
+    </div>
+    <div id="devo-body"></div>
+    <div id="devo-nav">
+      <button class="devo-nav-btn" id="devo-prev">&#8592; Prev</button>
+      <button class="devo-nav-btn" id="devo-today">Today</button>
+      <button class="devo-nav-btn" id="devo-next">Next &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<div id="about-backdrop">
+  <div id="about-panel">
+    <div id="about-header">
+      <h2>About</h2>
+      <button id="about-close">&#10005;</button>
+    </div>
+    <div id="about-body"><p id="about-loading" style="text-align:center;padding:20px;opacity:.5">Loading&hellip;</p></div>
+  </div>
+</div>
+
+<script>
+const DATA_URL   = './fsb-content.json';
+const NOTES_URL  = './fsb-notes.json';
+const DEVO_URL   = './fsb-devotional.json';
+const README_URL = 'https://raw.githubusercontent.com/firesidebible/Fireside-Bible/main/README.md';
+
+/* ── Paragraph rendering ────────────────────────────────────────────── */
+// Section heads arrive as plain paragraphs shaped "Title · 1:1–7".
+// Render them as real headings so they can be set bold, with the range in red.
+var SECTION_RE = /^(.{1,90}?) · ([^·]{1,60})$/;
+// Poetry arrives one line per paragraph. A run of short lines where at least
+// one line breaks mid-sentence is treated as a stanza and set tight.
+var POEM_MAX = 90;
+function isBreakLine(p) { return !/[.!?”"’)]$/.test(p); }
+function renderParagraphs(paras) {
+  var items = [];
+  paras.forEach(function(raw) {
+    var p = String(raw).replace(/<\/?w:[^>]*>/g, '').trim();   // strip stray Word XML
+    if (!p) return;
+    var m = p.length < 130 && !/[.,;!?”"]$/.test(p) ? p.match(SECTION_RE) : null;
+    items.push(m ? { head: m } : { text: p });
+  });
+  // mark stanza lines
+  for (var i = 0; i < items.length; ) {
+    if (!items[i].text || items[i].text.length > POEM_MAX) { i++; continue; }
+    var j = i, broken = false;
+    while (j < items.length && items[j].text && items[j].text.length <= POEM_MAX) {
+      if (isBreakLine(items[j].text)) broken = true; j++;
+    }
+    if (broken && j - i >= 2) {
+      for (var k = i; k < j; k++) items[k].line = true;
+      for (k = i; k < j - 1; k++) if (!isBreakLine(items[k].text)) items[k].stanzaEnd = true;
+      items[j - 1].stanzaEnd = true;
+    }
+    i = j;
+  }
+  var out = [], leadDone = false;
+  items.forEach(function(it) {
+    if (it.head) {
+      out.push('<h3 class="sec-head"><span class="sec-title">' + it.head[1] +
+               '</span><span class="sec-ref">' + it.head[2] + '</span></h3>');
+      return;
+    }
+    var cls = [];
+    if (!leadDone) { cls.push('lead'); leadDone = true; }
+    if (it.line) cls.push('line');
+    if (it.stanzaEnd) cls.push('stanza-end');
+    out.push(cls.length ? '<p class="' + cls.join(' ') + '">' + it.text + '</p>' : '<p>' + it.text + '</p>');
+  });
+  return out.join('');
+}
+
+/* ── State ──────────────────────────────────────────────────────────── */
+let bible = null, flatIndex = [], currentFlat = -1, readmeLoaded = false;
+let notesData = null, notesPromise = null;
+let devoData = null, devoPromise = null, devoKeys = [], devoIndex = -1;
+
+/* ── DOM ────────────────────────────────────────────────────────────── */
+const sidebarInner   = document.getElementById('sidebar-inner');
+const splash         = document.getElementById('splash');
+const chapterView    = document.getElementById('chapter-view');
+const chapterHeading = document.getElementById('chapter-heading');
+const chapterTitle   = document.getElementById('chapter-title');
+const chapterBody    = document.getElementById('chapter-body');
+const chapterRef     = document.getElementById('chapter-ref');
+const navLabel       = document.getElementById('nav-label');
+const btnPrev        = document.getElementById('btn-prev');
+const btnNext        = document.getElementById('btn-next');
+const menuToggle     = document.getElementById('menu-toggle');
+const overlay        = document.getElementById('overlay');
+const reader         = document.getElementById('reader');
+const aboutBtn       = document.getElementById('about-btn');
+const aboutBackdrop  = document.getElementById('about-backdrop');
+const aboutClose     = document.getElementById('about-close');
+const aboutBody      = document.getElementById('about-body');
+const notesSection   = document.getElementById('notes-section');
+const notesToggle    = document.getElementById('notes-toggle');
+const notesBody      = document.getElementById('notes-body');
+const notesInner     = document.getElementById('notes-inner');
+const notesWhere     = document.querySelector('#notes-label .notes-where');
+const devoBtn        = document.getElementById('devo-btn');
+const devoBackdrop   = document.getElementById('devo-backdrop');
+const devoBody       = document.getElementById('devo-body');
+const devoClose      = document.getElementById('devo-close');
+const devoPrev       = document.getElementById('devo-prev');
+const devoNext       = document.getElementById('devo-next');
+const devoToday      = document.getElementById('devo-today');
+
+/* ── Bible loader ───────────────────────────────────────────────────── */
+async function init() {
+  try {
+    const res = await fetch(DATA_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    bible = await res.json();
+    buildIndex();
+    buildSidebar();
+    loadNotes(); // fetch notes in the background; don't block the reader
+  } catch (e) {
+    splash.innerHTML = '<h2>Could not load content</h2><p>Make sure fsb-content.json is in the same directory.</p><p style="font-size:.8rem;opacity:.4;margin-top:8px">' + e.message + '</p>';
+  }
+}
+
+function buildIndex() {
+  flatIndex = [];
+  bible.testaments.forEach(function(t, ti) {
+    t.books.forEach(function(b, bi) {
+      b.chapters.forEach(function(c, ci) {
+        flatIndex.push({ ti: ti, bi: bi, ci: ci, label: b.name + ' ' + c.number });
+      });
+    });
+  });
+}
+
+function buildSidebar() {
+  sidebarInner.innerHTML = '';
+  bible.testaments.forEach(function(testament, ti) {
+    var group = document.createElement('div');
+    group.className = 'testament-group';
+
+    var lbl = document.createElement('div');
+    lbl.className = 'testament-label';
+    lbl.textContent = testament.name;
+    group.appendChild(lbl);
+
+    testament.books.forEach(function(book, bi) {
+      var bookRow = document.createElement('div');
+      bookRow.className = 'book-row';
+      bookRow.dataset.ti = ti; bookRow.dataset.bi = bi;
+      bookRow.innerHTML = '<span>' + book.name + '</span><span class="book-chevron">&#9658;</span>';
+
+      var chList = document.createElement('div');
+      chList.className = 'chapter-list';
+      chList.id = 'cl-' + ti + '-' + bi;
+
+      book.chapters.forEach(function(ch, ci) {
+        var btn = document.createElement('button');
+        btn.className = 'ch-btn';
+        btn.textContent = ch.number;
+        btn.dataset.ti = ti; btn.dataset.bi = bi; btn.dataset.ci = ci;
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          navigateTo(ti, bi, ci);
+          closeNav();
+        });
+        chList.appendChild(btn);
+      });
+
+      bookRow.addEventListener('click', function() {
+        var isOpen = chList.classList.contains('open');
+        document.querySelectorAll('.chapter-list.open').forEach(function(el) {
+          el.classList.remove('open');
+          if (el.previousElementSibling) el.previousElementSibling.classList.remove('open');
+        });
+        chList.classList.toggle('open', !isOpen);
+        bookRow.classList.toggle('open', !isOpen);
+        if (!isOpen) setTimeout(function() { bookRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+      });
+
+      group.appendChild(bookRow);
+      group.appendChild(chList);
+    });
+
+    sidebarInner.appendChild(group);
+  });
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────── */
+function navigateTo(ti, bi, ci) {
+  var testament = bible.testaments[ti];
+  var book      = testament.books[bi];
+  var chapter   = book.chapters[ci];
+
+  currentFlat = flatIndex.findIndex(function(x) { return x.ti === ti && x.bi === bi && x.ci === ci; });
+
+  splash.style.display = 'none';
+  chapterView.style.display = 'block';
+  chapterView.classList.remove('fadein');
+  void chapterView.offsetWidth;
+  chapterView.classList.add('fadein');
+
+  chapterHeading.textContent = testament.name + '  \u00b7  ' + book.name;
+  chapterTitle.textContent   = chapter.title ? chapter.number + '. ' + chapter.title : 'Chapter ' + chapter.number;
+  chapterBody.innerHTML      = renderParagraphs(chapter.paragraphs || []);
+
+  var label = book.name + ' ' + chapter.number;
+  chapterRef.textContent  = label;
+  navLabel.innerHTML      = '<strong>' + label + '</strong>';
+
+  updateSidebarActive(ti, bi, ci);
+  updateNavButtons();
+  setupNotes(book.name, chapter.number);
+  reader.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+/* ── Notes ──────────────────────────────────────────────────────────── */
+function loadNotes() {
+  if (!notesPromise) {
+    notesPromise = fetch(NOTES_URL)
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) { notesData = data; return data; })
+      .catch(function(e) { notesPromise = null; throw e; });
+  }
+  return notesPromise;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* Find the notes entry for a chapter, honoring 'covers' ranges
+   (e.g. Malachi's 1–2 section answers for both chapters). */
+function findNotesEntry(bookName, chNum) {
+  if (!notesData || !notesData[bookName]) return null;
+  var chapters = notesData[bookName];
+  var key = String(chNum);
+  if (chapters[key]) return { entry: chapters[key], label: key };
+  for (var k in chapters) {
+    var covers = chapters[k].covers;
+    if (covers) {
+      var m = covers.match(/^(\d+)\s*[\u2013\u2014-]\s*(\d+)$/);
+      if (m && chNum >= parseInt(m[1], 10) && chNum <= parseInt(m[2], 10)) {
+        return { entry: chapters[k], label: covers };
+      }
+    }
+  }
+  return null;
+}
+
+function renderNotes(bookName, chNum) {
+  var found = findNotesEntry(bookName, chNum);
+  if (!found) {
+    notesInner.innerHTML = '<p style="opacity:.6;font-style:italic">No notes for this chapter.</p>';
+    return;
+  }
+  var entry = found.entry;
+  var html = [];
+
+  if (entry.covers) {
+    html.push('<div class="notes-covers">These notes cover ' + esc(bookName) + ' ' + esc(entry.covers) + '.</div>');
+  }
+  if (entry.intro && entry.intro.length) {
+    html.push('<div class="notes-intro">' + entry.intro.map(function(p) {
+      return '<p>' + esc(p) + '</p>';
+    }).join('') + '</div>');
+  }
+  (entry.notes || []).forEach(function(n) {
+    if (n.heading) {
+      html.push('<div class="note-heading">' + esc(n.heading) + '</div>');
+      return;
+    }
+    html.push('<div class="note-block">');
+    var head = '<span class="note-ref">' + esc(n.v || '') + '</span>';
+    if (n.rendering) head += '  \u2014  \u201c' + esc(n.rendering) + '\u201d';
+    html.push('<div class="note-v">' + head + '</div>');
+    if (n.original) html.push('<div class="note-original">' + esc(n.original) + '</div>');
+    if (n.why) {
+      html.push('<div class="note-why">' + n.why.split('\n').map(function(p) {
+        return '<p>' + esc(p) + '</p>';
+      }).join('') + '</div>');
+    }
+    html.push('</div>');
+  });
+  if (entry.outro && entry.outro.length) {
+    html.push('<div class="notes-outro">' + entry.outro.map(function(p) {
+      return '<p>' + esc(p) + '</p>';
+    }).join('') + '</div>');
+  }
+  notesInner.innerHTML = html.join('');
+}
+
+/* The notes pane stays docked at the bottom while you read. It shows the
+   current chapter's notes, hides itself for chapters without notes, and
+   remembers whether it was collapsed and how tall you dragged it. */
+var NOTES_PREF = { collapsed: false, h: null };
+try { NOTES_PREF = Object.assign(NOTES_PREF, JSON.parse(localStorage.getItem('fsb-notes-pane') || '{}')); } catch (e) {}
+function saveNotesPref() { try { localStorage.setItem('fsb-notes-pane', JSON.stringify(NOTES_PREF)); } catch (e) {} }
+function applyNotesPref() {
+  document.body.classList.toggle('notes-collapsed', !!NOTES_PREF.collapsed);
+  notesToggle.setAttribute('aria-expanded', NOTES_PREF.collapsed ? 'false' : 'true');
+  notesToggle.setAttribute('aria-label', NOTES_PREF.collapsed ? 'Expand notes' : 'Collapse notes');
+  if (NOTES_PREF.h) document.documentElement.style.setProperty('--notes-h', NOTES_PREF.h + 'vh');
+}
+
+var notesSeq = 0;
+async function setupNotes(bookName, chNum) {
+  var seq = ++notesSeq;
+  notesWhere.textContent = bookName + ' ' + chNum;
+  notesBody.scrollTop = 0;
+  if (!notesData) {
+    notesInner.innerHTML = '<p style="opacity:.5;font-style:italic">Loading notes\u2026</p>';
+    document.body.classList.add('has-notes');
+    try { await loadNotes(); }
+    catch (e) {
+      if (seq !== notesSeq) return;
+      notesInner.innerHTML = '<p style="color:var(--accent)">Could not load notes (' + esc(e.message) + '). Make sure fsb-notes.json is in the same directory.</p>';
+      return;
+    }
+    if (seq !== notesSeq) return;   // reader moved on while loading
+  }
+  var found = findNotesEntry(bookName, chNum);
+  document.body.classList.toggle('has-notes', !!found);
+  if (found) renderNotes(bookName, chNum);
+  else notesInner.innerHTML = '';
+}
+
+/* ── Devotional ─────────────────────────────────────────────────────── */
+function loadDevo() {
+  if (!devoPromise) {
+    devoPromise = fetch(DEVO_URL)
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        devoData = data;
+        devoKeys = Object.keys(data).sort();
+        return data;
+      })
+      .catch(function(e) { devoPromise = null; throw e; });
+  }
+  return devoPromise;
+}
+
+function todayKey() {
+  var now = new Date();
+  var m = String(now.getMonth() + 1);
+  var d = String(now.getDate());
+  return (m.length < 2 ? '0' + m : m) + '-' + (d.length < 2 ? '0' + d : d);
+}
+
+function renderDevo(idx) {
+  if (idx < 0) idx = devoKeys.length - 1;
+  if (idx >= devoKeys.length) idx = 0;
+  devoIndex = idx;
+  var e = devoData[devoKeys[idx]];
+  var html = [];
+  html.push('<div class="devo-date">' + esc(e.date) + '</div>');
+  html.push('<div class="devo-ref">' + esc(e.ref) + '</div>');
+  html.push('<div class="devo-verse">\u201c' + esc(e.verse) + '\u201d</div>');
+  (e.body || []).forEach(function(p) {
+    html.push('<div class="devo-para">' + esc(p) + '</div>');
+  });
+  if (e.prayer) {
+    html.push('<div class="devo-block"><span class="devo-label">Prayer</span>' + esc(e.prayer) + '</div>');
+  }
+  if (e.reflection) {
+    html.push('<div class="devo-block"><span class="devo-label">Reflection</span>' + esc(e.reflection) + '</div>');
+  }
+  devoBody.innerHTML = html.join('');
+  devoBody.scrollTop = 0;
+}
+
+async function openDevo() {
+  devoBackdrop.classList.add('open');
+  if (!devoData) {
+    devoBody.innerHTML = '<p style="opacity:.5;font-style:italic;text-align:center;padding:20px">Loading\u2026</p>';
+    try {
+      await loadDevo();
+    } catch (e) {
+      devoBody.innerHTML = '<p style="color:var(--accent);text-align:center">Could not load the devotional (' + esc(e.message) + '). Make sure fsb-devotional.json is in the same directory.</p>';
+      return;
+    }
+  }
+  var idx = devoKeys.indexOf(todayKey());
+  renderDevo(idx >= 0 ? idx : 0);
+}
+
+devoBtn.addEventListener('click', openDevo);
+devoClose.addEventListener('click', function() { devoBackdrop.classList.remove('open'); });
+devoBackdrop.addEventListener('click', function(ev) {
+  if (ev.target === devoBackdrop) devoBackdrop.classList.remove('open');
+});
+devoPrev.addEventListener('click', function() { if (devoData) renderDevo(devoIndex - 1); });
+devoNext.addEventListener('click', function() { if (devoData) renderDevo(devoIndex + 1); });
+devoToday.addEventListener('click', function() {
+  if (devoData) {
+    var idx = devoKeys.indexOf(todayKey());
+    renderDevo(idx >= 0 ? idx : 0);
+  }
+});
+
+notesToggle.addEventListener('click', function(ev) {
+  ev.stopPropagation();
+  NOTES_PREF.collapsed = !NOTES_PREF.collapsed;
+  applyNotesPref(); saveNotesPref();
+});
+
+/* Drag the notes header up or down to resize the pane. A tap (no drag)
+   on the header toggles it, same as the chevron. */
+(function() {
+  var head = document.getElementById('notes-head');
+  var startY = 0, startH = 0, moved = false, dragging = false;
+  function vh() { return window.innerHeight / 100; }
+  head.addEventListener('pointerdown', function(ev) {
+    if (ev.target.closest('#notes-toggle')) return;
+    dragging = true; moved = false; startY = ev.clientY;
+    startH = notesSection.getBoundingClientRect().height;
+    head.setPointerCapture(ev.pointerId);
+  });
+  head.addEventListener('pointermove', function(ev) {
+    if (!dragging) return;
+    var dy = startY - ev.clientY;
+    if (!moved && Math.abs(dy) < 6) return;
+    moved = true;
+    document.body.classList.add('notes-dragging');
+    if (NOTES_PREF.collapsed) { NOTES_PREF.collapsed = false; applyNotesPref(); }
+    var h = Math.min(70, Math.max(18, (startH + dy) / vh()));
+    NOTES_PREF.h = Math.round(h * 10) / 10;
+    document.documentElement.style.setProperty('--notes-h', NOTES_PREF.h + 'vh');
+  });
+  function end() {
+    if (!dragging) return;
+    dragging = false;
+    document.body.classList.remove('notes-dragging');
+    if (!moved) { NOTES_PREF.collapsed = !NOTES_PREF.collapsed; applyNotesPref(); }
+    saveNotesPref();
+  }
+  head.addEventListener('pointerup', end);
+  head.addEventListener('pointercancel', end);
+})();
+applyNotesPref();
+
+/* ── Light / dark toggle ────────────────────────────────────────────── */
+(function() {
+  var btn = document.getElementById('theme-btn');
+  var meta = document.querySelector('meta[name="theme-color"]');
+  function set(t, save) {
+    document.documentElement.setAttribute('data-theme', t);
+    meta.setAttribute('content', t === 'dark' ? '#0d0d0d' : '#ffffff');
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    if (save) { try { localStorage.setItem('fsb-theme', t); } catch (e) {} }
+  }
+  set(document.documentElement.getAttribute('data-theme') || 'light', false);
+  btn.addEventListener('click', function() {
+    set(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+  });
+  // If the reader hasn't picked one, keep following the phone's setting.
+  if (window.matchMedia) {
+    var mq = matchMedia('(prefers-color-scheme: dark)');
+    var onChange = function(e) {
+      var saved = null; try { saved = localStorage.getItem('fsb-theme'); } catch (err) {}
+      if (!saved) set(e.matches ? 'dark' : 'light', false);
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onChange); else if (mq.addListener) mq.addListener(onChange);
+  }
+})();
+
+function updateSidebarActive(ti, bi, ci) {
+  document.querySelectorAll('.book-row.active').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.ch-btn.active').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.book-row[data-ti="' + ti + '"][data-bi="' + bi + '"]').forEach(function(r) { r.classList.add('active'); });
+  var btn = document.querySelector('.ch-btn[data-ti="' + ti + '"][data-bi="' + bi + '"][data-ci="' + ci + '"]');
+  if (btn) {
+    btn.classList.add('active');
+    var chList = document.getElementById('cl-' + ti + '-' + bi);
+    if (chList && !chList.classList.contains('open')) {
+      chList.classList.add('open');
+      if (chList.previousElementSibling) chList.previousElementSibling.classList.add('open');
+    }
+  }
+}
+
+function updateNavButtons() {
+  btnPrev.disabled = currentFlat <= 0;
+  btnNext.disabled = currentFlat >= flatIndex.length - 1;
+}
+
+btnPrev.addEventListener('click', function() {
+  if (currentFlat > 0) { var x = flatIndex[currentFlat - 1]; navigateTo(x.ti, x.bi, x.ci); }
+});
+btnNext.addEventListener('click', function() {
+  if (currentFlat < flatIndex.length - 1) { var x = flatIndex[currentFlat + 1]; navigateTo(x.ti, x.bi, x.ci); }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' && !btnNext.disabled) btnNext.click();
+  if (e.key === 'ArrowLeft'  && !btnPrev.disabled) btnPrev.click();
+});
+
+/* ── Sidebar toggle ─────────────────────────────────────────────────── */
+function openNav()  { document.body.classList.remove('nav-closed'); document.body.classList.add('nav-open'); }
+function closeNav() { document.body.classList.remove('nav-open');   document.body.classList.add('nav-closed'); }
+
+menuToggle.addEventListener('click', function() {
+  document.body.classList.contains('nav-closed') ? openNav() : closeNav();
+});
+overlay.addEventListener('click', closeNav);
+
+/* ── About modal ────────────────────────────────────────────────────── */
+function mdToHtml(md) {
+  var lines = md.split('\n');
+  var out = [];
+  var inPara = false;
+  var inUl = false;
+
+  function closePara() { if (inPara) { out.push('</p>'); inPara = false; } }
+  function closeUl()   { if (inUl)   { out.push('</ul>'); inUl = false; } }
+
+  lines.forEach(function(raw) {
+    var line = raw
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>')
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+      .replace(/_([^_]+)_/g,'<em>$1</em>')
+      .replace(/`([^`]+)`/g,'<code>$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+    var t = line.trim();
+
+    if (!t) { closePara(); closeUl(); return; }
+    if (/^#{4}\s/.test(t)) { closePara(); closeUl(); out.push('<h3>' + t.replace(/^#{4}\s/,'') + '</h3>'); return; }
+    if (/^#{3}\s/.test(t)) { closePara(); closeUl(); out.push('<h3>' + t.replace(/^#{3}\s/,'') + '</h3>'); return; }
+    if (/^#{2}\s/.test(t)) { closePara(); closeUl(); out.push('<h2>' + t.replace(/^#{2}\s/,'') + '</h2>'); return; }
+    if (/^#{1}\s/.test(t)) { closePara(); closeUl(); out.push('<h1>' + t.replace(/^#{1}\s/,'') + '</h1>'); return; }
+    if (/^---+$/.test(t))  { closePara(); closeUl(); out.push('<hr>'); return; }
+    if (/^&gt;\s/.test(t)) { closePara(); closeUl(); out.push('<blockquote><p>' + t.replace(/^&gt;\s/,'') + '</p></blockquote>'); return; }
+    if (/^\s*[-*]\s/.test(raw)) {
+      closePara();
+      if (!inUl) { out.push('<ul>'); inUl = true; }
+      out.push('<li>' + t.replace(/^[-*]\s/,'') + '</li>');
+      return;
+    }
+    if (/^\s*\d+\.\s/.test(raw)) {
+      closePara();
+      if (!inUl) { out.push('<ul>'); inUl = true; }
+      out.push('<li>' + t.replace(/^\d+\.\s/,'') + '</li>');
+      return;
+    }
+    closeUl();
+    if (!inPara) { out.push('<p>'); inPara = true; }
+    out.push(t + ' ');
+  });
+  closePara(); closeUl();
+  return out.join('\n');
+}
+
+async function loadReadme() {
+  if (readmeLoaded) return;
+  try {
+    var res = await fetch(README_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var md = await res.text();
+    aboutBody.innerHTML = mdToHtml(md);
+    readmeLoaded = true;
+  } catch(e) {
+    aboutBody.innerHTML = '<p style="color:var(--accent)">Could not load README (' + e.message + ').</p><p>View it at <a href="https://github.com/firesidebible/Fireside-Bible" target="_blank">github.com/firesidebible/Fireside-Bible</a>.</p>';
+  }
+}
+
+function openAbout()  { aboutBackdrop.classList.add('open');    loadReadme(); }
+function closeAbout() { aboutBackdrop.classList.remove('open'); }
+
+aboutBtn.addEventListener('click', openAbout);
+aboutClose.addEventListener('click', closeAbout);
+aboutBackdrop.addEventListener('click', function(e) { if (e.target === aboutBackdrop) closeAbout(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAbout(); });
+
+/* ── Go ─────────────────────────────────────────────────────────────── */
+init();
+</script>
+</body>
+</html>
