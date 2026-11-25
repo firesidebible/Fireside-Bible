@@ -2060,6 +2060,12 @@
      "why": "Di’ hydatos kai haimatos — through water and blood. The referents are disputed: baptism and the cross? The birth waters and the crucifixion blood? The water and blood that flowed from the side of Christ at the spear-thrust (John 19:34)? The most likely reading, given the polemical context, is the two defining events of Jesus’ public career: his baptism (when the divine Spirit descended and the voice declared him Son of God) and his crucifixion (when he died bodily). The opponents may have accepted the water — the divine Christ arriving at the baptism — while denying the blood — the divine Christ truly dying on the cross. John insists: not water only but water and blood."
     },
     {
+     "v": "5:7–8",
+     "original": "en tō ouranō, ho patēr, ho logos kai to hagion pneuma, kai houtoi hoi treis hen eisi. kai treis eisin hoi martyrountes en tē gē",
+     "rendering": "in heaven: the Father, the Word, and the Holy Spirit; and these three are one. And there are three who testify on earth",
+     "why": "The “Johannine Comma.” It began in Latin, probably as a comment on this verse, and appears in only a handful of late Greek manuscripts; neither NA28 nor the Majority Text has it, and the WEB keeps it only in a footnote. Erasmus added it to his third Greek edition (1522), which is how it came into the KJV. The Trinity does not rest on this verse; the doctrine stands on the New Testament as a whole. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
      "v": "5:20",
      "original": "oidamen de hoti ho huios tou theou hēkei — we know that the Son of God has come",
      "rendering": "We know that the Son of God has come, and has given us an understanding, that we know him who is true",
@@ -6167,6 +6173,12 @@
      "original": "arxamenos apo tēs graphēs tautēs euēngelisatō autō ton Iēsoun — beginning from this scripture he preached to him Jesus",
      "rendering": "Then Philip begins to speak. Starting from this very Scripture, he tells him the good news about Jesus.",
      "why": "The formula is programmatic: Philip begins from the text — Isaiah 53:7–8 — and moves to Jesus. This is the pattern of early Christian interpretation: the scriptures of Israel are the starting point and Jesus is the destination. The Ethiopian’s question — ‘about whom does the prophet say this?’ — is the question that opens the entire interpretive project. Philip’s answer is the whole Gospel in miniature."
+    },
+    {
+     "v": "8:37",
+     "original": "pisteuō ton huion tou theou einai ton Iēsoun Christon",
+     "rendering": "Philip says, “If you believe with all your heart, you may.” And he answers, “I believe that Jesus the Messiah is the Son of",
+     "why": "Not in the Majority Text either (the WEB keeps it only in a footnote). It is the “Western” text, known as early as Irenaeus (about AD 180), and it preserves an early baptismal confession. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     }
    ]
   },
@@ -6342,6 +6354,12 @@
      "original": "edoxen gar tō pneumati tō hagiō kai hēmin — for it seemed good to the Holy Spirit and to us",
      "rendering": "It has seemed good to the Holy Spirit, and to us, not to lay any heavier load on you than these few necessary things",
      "why": "The formula is unprecedented: a council letter that names the Holy Spirit as co-author. Dokeo — to seem, to appear, to be judged. The same word governs the council’s own verdict (v. 22: edoxen — it seemed good). The Spirit’s judgement and the community’s judgement are placed in parallel — a theology of conciliar discernment that grounds human decision in divine guidance without removing human responsibility."
+    },
+    {
+     "v": "15:34",
+     "original": "edoxe de tō Sila epimeinai autou",
+     "rendering": "Silas, though, decides to stay on there.",
+     "why": "Not in the Majority Text either. Added to explain how Silas is still in Antioch for Paul to choose in 15:40. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     }
    ]
   },
@@ -6557,6 +6575,12 @@
      "why": "Hairesis — sect, school, party (from haireo — to choose; the source of the English ‘heresy’, though in the first century it simply meant a distinct group with shared beliefs, like the Pharisees or Sadducees). Tertullus uses the charge structure of Roman law: sedition (stirring up riots), religious desecration (profaning the temple), and sectarian leadership. Paul will counter each charge precisely. The label ‘Nazarenes’ is the earliest external name for the Jesus movement in Acts."
     },
     {
+     "v": "24:6–8",
+     "original": "kai kata ton hēmeteron nomon ēthelēsamen krinein. parelthōn de Lysias ho chiliarchos",
+     "rendering": "We wanted to judge him by our own law, but Lysias the commander came and took him out of our hands by force, and",
+     "why": "Covers the end of 24:6, all of 24:7 and the start of 24:8; not in the Majority Text either. With it, the “him” Felix is to question in 24:8 becomes Lysias rather than Paul. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
      "v": "24:14",
      "original": "kata tēn hodon hēn legousin hairesin — according to the Way, which they call a sect",
      "rendering": "But this much I do admit to you: I worship the God of our fathers as a follower of the Way",
@@ -6661,6 +6685,12 @@
      "original": "diamartyromenos tēn basileian tou theou — testifying about the kingdom of God",
      "rendering": "bearing witness to the kingdom of God",
      "why": "The final synagogue session in Rome recapitulates the entire book’s method: scripture-based argument, from Moses and the Prophets, moving toward Jesus. Diamartyromenos — testifying solemnly (from diamartyromai — the word used throughout Acts for Paul’s formal proclamation). The kingdom of God (hē basileia tou theou) is the first subject of Jesus’s post-resurrection teaching (1:3) and the last subject of Paul’s preaching (28:31) — a deliberate envelope structure."
+    },
+    {
+     "v": "28:29",
+     "original": "kai tauta autou eipontos apēlthon hoi Ioudaioi pollēn echontes en heautois syzētēsin",
+     "rendering": "When he has said these words, the Jews leave, arguing hotly among themselves.",
+     "why": "It repeats what 28:25 has already said, that they leave still disagreeing. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     },
     {
      "v": "28:31",
@@ -16943,6 +16973,12 @@
    ],
    "notes": [
     {
+     "v": "5:3–4",
+     "original": "ekdechomenōn tēn tou hudatos kinēsin. angelos gar kata kairon katebainen en tē kolymbēthra",
+     "rendering": "They are waiting for the water to move, because at certain times an angel goes down into the pool and stirs the water up",
+     "why": "Covers the end of 5:3 and all of 5:4. It explains the sick man’s words in 5:7 about the stirred water, and probably began as a note in the margin recording the local belief about the pool. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
      "v": "5:6",
      "original": "theleis hygies genesthai",
      "rendering": "He asks him, “Do you want to be made well?”",
@@ -21895,6 +21931,12 @@
      "why": "Peripoieo means to preserve, to make safe around oneself — to hold onto by surrounding with protection. Zoogoneō means to keep alive, to preserve in life. The paradox of verse 33 is the same as 9:24 but in different vocabulary: the grip that tries to hold life loses it; the open hand that releases it finds it kept. The same truth appears three times in Luke — at the cost-of-discipleship teaching, here, and implicitly in the Prodigal Son’s far country — because it is the truth that most needs repeating."
     },
     {
+     "v": "17:36",
+     "original": "dyo esontai en tō agrō ho heis paralēmphthēsetai kai ho heteros aphethēsetai",
+     "rendering": "Two people will be in the field: one will be taken and the other left.",
+     "why": "Not in the Majority Text either; it comes from Matthew 24:40 and reached the KJV through the Latin and a few Greek manuscripts. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
      "v": "17:37",
      "original": "hoi aetoi episynachthēsontai",
      "rendering": "there the vultures will gather",
@@ -22676,6 +22718,12 @@
      "original": "Philíoi dē egenonto… en autē tē hēmera",
      "rendering": "become friends… that very day",
      "why": "The detail is peculiar and precise: Herod and Pilate were previously enemies; they become friends on the day they collaborate in the trial of Jesus. Luke does not explain the prior enmity or comment on the irony. Acts 4:27 will cite this as a fulfilment of Psalm 2:1–2 (‘the rulers take counsel together, against the Lord and against his Anointed’). The friendship sealed in the condemnation of the innocent is Luke’s quiet indictment of both men."
+    },
+    {
+     "v": "23:17",
+     "original": "anankēn de eichen apolyein autois kata heortēn hena",
+     "rendering": "Now at the feast he is bound to release one prisoner to them.",
+     "why": "An explanatory line, like Matthew 27:15 and Mark 15:6, telling the hearer why the crowd can ask for Barabbas. Its place varies in the manuscripts that have it. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     },
     {
      "v": "23:25",
@@ -23460,6 +23508,12 @@
      "why": "Koinoō means to make common, to render profane. Jesus is relocating the boundary: not at the surface of the body but at the center of the will."
     },
     {
+     "v": "7:16",
+     "original": "ei tis echei ōta akouein akouetō",
+     "rendering": "Whoever has ears to hear, let them hear.",
+     "why": "Jesus’ refrain from 4:9 and 4:23, added here by later copyists after the “parable” about what defiles. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
      "v": "7:19",
      "original": "katharizōn panta ta brōmata",
      "rendering": "declaring all foods clean",
@@ -23644,6 +23698,18 @@
      "why": "Present passive — not will be handed over, but is being handed over, right now, in the ongoing purpose of God. The handing-over is not a future event Jesus dreads; it is a present reality he inhabits."
     },
     {
+     "v": "9:44",
+     "original": "hopou ho skōlēx autōn ou teleuta kai to pyr ou sbennutai",
+     "rendering": "Where their worm does not die and the fire is not quenched.",
+     "why": "A copy of the Isaiah 66:24 refrain that every manuscript has at 9:48. Later copyists repeated it after each warning, giving the passage a three-beat drumroll. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
+     "v": "9:46",
+     "original": "hopou ho skōlēx autōn ou teleuta kai to pyr ou sbennutai",
+     "rendering": "Where their worm does not die and the fire is not quenched.",
+     "why": "The same refrain as 9:44 and 9:48. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
      "v": "9:48",
      "original": "hē skōlēx…kai to pyr",
      "rendering": "their worm…the fire",
@@ -23718,6 +23784,12 @@
      "original": "aphete",
      "rendering": "release it",
      "why": "Aphiēmi — the liberation word. Forgiveness and releasing debts are the same act in the vocabulary of the gospel. The prayer teaching is embedded in the language of Jubilee."
+    },
+    {
+     "v": "11:26",
+     "original": "ei de humeis ouk aphiete oude ho patēr humōn ho en tois ouranois aphēsei ta paraptōmata humōn",
+     "rendering": "But if you do not release, neither will your Father in heaven release your trespasses.",
+     "why": "Closely matches Matthew 6:15, likely its source. “Release” keeps Mark’s rendering of aphiēmi from 11:25. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     },
     {
      "v": "11:33",
@@ -23866,6 +23938,12 @@
    "intro": [],
    "notes": [
     {
+     "v": "15:28",
+     "original": "kai eplērōthē hē graphē hē legousa kai meta anomōn elogisthē",
+     "rendering": "And the Scripture is fulfilled that says, “He was counted among the lawless.",
+     "why": "Isaiah 53:12, which Jesus applies to himself in Luke 22:37; the wording here matches Luke 22:37 in this edition. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
+    },
+    {
      "v": "15:31",
      "original": "allous esōsen, heauton ou dynatai sōsai",
      "rendering": "he saved others — he cannot save himself",
@@ -23923,6 +24001,12 @@
      "original": "ephobounto gar",
      "rendering": "for they are afraid",
      "why": "The gospel ends with gar — for, because. A sentence ending with gar is grammatically irregular in Greek. Whether this is deliberate or accidental, the effect is the same: the story breaks off mid-sentence, leaving the fear and the empty tomb and the message undelivered — until the reader carries it forward."
+    },
+    {
+     "v": "16:8",
+     "original": "panta de ta parēngelmena tois peri ton Petron syntomōs exēngeilan",
+     "rendering": "They report briefly to Peter and those with him everything they have been told. And after this Jesus himself sends out through them, from east to west, the holy and imperishable proclamation of eternal salvation. Amen",
+     "why": "The “shorter ending” of Mark. A few manuscripts end the Gospel with it after 16:8; most of those then go on to the longer ending (16:9–20) as well. It has no verse number of its own. Printed here in brackets so the reader hears it and knows its standing."
     },
     {
      "v": "16:9–20",
@@ -24515,6 +24599,12 @@
      "original": "erei tō orei toutō, metaba enthen ekei — move this mountain",
      "rendering": "if your faith is only the size of a mustard seed, you will tell this mountain, ‘Shift over there,’ and over it will go.",
      "why": "Moving mountains is an established Aramaic idiom for accomplishing something extraordinarily difficult or seemingly impossible. The Talmud uses it: 'An uprooter of mountains' (aqar harim) is a title for a scholar who can resolve impossibly difficult questions (Babylonian Talmud Berachot 64a). Rabbinic teachers could be described as 'moving mountains' when they made difficult rulings. Jesus uses the idiom — which his Aramaic-speaking hearers would have immediately recognised as hyperbole — to describe the effect of genuine faith. He is not teaching levitation; he is saying that faith of even the smallest genuine kind can accomplish what seems categorically impossible. The mustard seed (the benchmark of smallness from 13:31) applied to faith: even that much real faith moves mountains. The disciples' failure to cast out the demon was not a question of technique but of the quality of their trust."
+    },
+    {
+     "v": "17:21",
+     "original": "touto de to genos ouk ekporeuetai ei mē en proseuchē kai nēsteia",
+     "rendering": "But this kind goes out only by prayer and fasting.",
+     "why": "Almost certainly carried over from Mark 9:29, where later copyists also added “and fasting.” Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     }
    ]
   },
@@ -24528,6 +24618,12 @@
      "original": "ean me strephēte kai genēsthe hōs ta paidia — turning / teshuvah",
      "rendering": "Truly I tell you,” he says, “unless you turn around and become like little children",
      "why": "Strephēte — turn, be converted, change direction. The verb renders the Hebrew/Aramaic shuv (return, turn) — the word for repentance in the Hebrew prophetic tradition. Teshuvah (turning) is not primarily an emotional experience but a directional one: you are going one way and you turn to go another. The disciples have just been arguing about who is greatest in the kingdom — jockeying for position in the very order of things that Jesus is upending. He tells them to turn — to reverse the entire direction of the question. The child placed in their midst is not a symbol of innocence but of social insignificance: in the ancient world, children had no status, no rights, no standing in the community. To become like a child is to abandon the claim to status altogether."
+    },
+    {
+     "v": "18:11",
+     "original": "ēlthen gar ho huios tou anthrōpou sōsai to apolōlos",
+     "rendering": "For the Son of Man has come to save what was lost.",
+     "why": "The words match Luke 19:10, which is likely where they came from. They make a natural bridge into the lost sheep. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     },
     {
      "v": "18:18–20",
@@ -24707,6 +24803,12 @@
      "original": "phyllaktēria — tefillin; kraspedon — tzitzit",
      "rendering": "Everything they do, they do so people will see it",
      "why": "Phyllaktēria — the Greek word for tefillin (the small black leather boxes containing Torah passages, worn on the arm and forehead during prayer, based on Deuteronomy 6:8). Kraspedon — fringes, the Greek for tzitzit (the ritual fringes on the corners of the garment, commanded in Numbers 15:38–40 and Deuteronomy 22:12). Both are legitimate practices of Jewish piety — the same fringes (kraspedon) the woman with the haemorrhage touched in 9:20, and Jesus himself wore them (14:36). The condemnation is not the practice but the widening and lengthening for display: the enlarging of the phylacteries and the lengthening of the fringes to be seen by others. The act of Torah is turned into a performance of piety."
+    },
+    {
+     "v": "23:14",
+     "original": "katesthiete tas oikias tōn chērōn kai prophasei makra proseuchomenoi",
+     "rendering": "How terrible for you, scribes and Pharisees, you hypocrites! You swallow up widows’ houses, and then put on a show with long prayers. You",
+     "why": "Borrowed from Mark 12:40 and Luke 20:47. Manuscripts that have it place it either before or after the woe about locking up the kingdom (the WEB numbers it 23:13); it sits here in the KJV order. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     },
     {
      "v": "23:23",
@@ -33118,6 +33220,12 @@
      "original": "Iounian... episēmoi en tois apostolois — Junia, outstanding among the apostles",
      "rendering": "Greet Andronicus and Junia, my kinsfolk who were in prison with me. They are outstanding among the apostles",
      "why": "Iounian is the accusative of the female name Junia — a common Latin name attested in hundreds of inscriptions. The masculine reading 'Junias' is unattested in the ancient world and appears to be a scribal correction motivated by discomfort with a female apostle. The church fathers (Chrysostom, Origen, Jerome) consistently read this as female. Episēmoi en tois apostolois means 'outstanding among the apostles' — Junia and Andronicus are themselves apostles, not merely well-regarded by apostles."
+    },
+    {
+     "v": "16:24",
+     "original": "hē charis tou kyriou hēmōn Iēsou Christou meta pantōn humōn. amēn.",
+     "rendering": "The grace of our Lord Jesus the Messiah be with you all. Amen.",
+     "why": "A second grace-blessing that repeats 16:20. Manuscripts that have it usually put the doxology (16:25–27) at the end of chapter 14, as the WEB does. Not in the earliest Greek manuscripts, so NA28 leaves it out of the text; it comes into later manuscripts and the Majority Text and stands in the KJV. Printed here in brackets so the reader hears it and knows its standing."
     },
     {
      "v": "16:25–27",
